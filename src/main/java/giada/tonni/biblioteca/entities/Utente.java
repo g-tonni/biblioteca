@@ -26,6 +26,9 @@ public class Utente {
     private String email;
 
     @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private long telefono;
 
     @Column(nullable = false)
@@ -38,11 +41,12 @@ public class Utente {
     private Utente() {
     }
 
-    public Utente(String nome, String cognome, LocalDate dataNascita, String email, long telefono, Ruolo ruolo) {
+    public Utente(String nome, String cognome, LocalDate dataNascita, String email, String password, long telefono, Ruolo ruolo) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
         this.email = email;
+        this.password = password;
         this.telefono = telefono;
         this.ruolo = ruolo;
         this.dataIscrizione = LocalDate.now();
@@ -83,6 +87,10 @@ public class Utente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public long getTelefono() {

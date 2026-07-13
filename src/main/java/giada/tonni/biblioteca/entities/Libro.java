@@ -15,10 +15,10 @@ public class Libro {
     @Column(nullable = false)
     private String isbn;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String titolo;
 
-    @Column(nullable = false)
+    @Column(length = 800, nullable = false)
     private String descrizione;
 
     @Column(nullable = false)
@@ -37,10 +37,12 @@ public class Libro {
     private Libro() {
     }
 
-    public Libro(String isbn, String titolo, String descrizione, int annoPubblicazione, Autore autore) {
+    public Libro(String isbn, String titolo, String descrizione, int numPagine, String copertina, int annoPubblicazione, Autore autore) {
         this.isbn = isbn;
         this.titolo = titolo;
         this.descrizione = descrizione;
+        this.numPagine = numPagine;
+        this.copertina = copertina;
         this.annoPubblicazione = annoPubblicazione;
         this.autore = autore;
     }
@@ -71,6 +73,22 @@ public class Libro {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public int getNumPagine() {
+        return numPagine;
+    }
+
+    public void setNumPagine(int numPagine) {
+        this.numPagine = numPagine;
+    }
+
+    public String getCopertina() {
+        return copertina;
+    }
+
+    public void setCopertina(String copertina) {
+        this.copertina = copertina;
     }
 
     public int getAnnoPubblicazione() {
