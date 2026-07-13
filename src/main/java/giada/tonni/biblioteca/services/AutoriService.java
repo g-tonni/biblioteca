@@ -6,22 +6,39 @@ import giada.tonni.biblioteca.exceptions.NotFoundException;
 import giada.tonni.biblioteca.payloads.AutoreDTO;
 import giada.tonni.biblioteca.payloads.DeleteAutoreDTO;
 import giada.tonni.biblioteca.repositories.AutoriRepository;
+import giada.tonni.biblioteca.specifications.AutoriSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class AutoriService {
 
     private final AutoriRepository autoriRepository;
+    private final AutoriSpecification autoriSpecification;
 
-    public AutoriService(AutoriRepository autoriRepository) {
+    public AutoriService(AutoriRepository autoriRepository, AutoriSpecification autoriSpecification) {
         this.autoriRepository = autoriRepository;
+        this.autoriSpecification = autoriSpecification;
     }
 
-    public List<Autore> findAllAutori() {
-        return this.autoriRepository.findAll();
+    public Page<Autore> findAllAutori(int page, int size, String partialName) {
+
+        if (size > 20 || size < 0) size = 10;
+        if (page < 0) page = 0;
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Autore> spec = (root, query, cb) -> cb.conjunction();
+
+        if (partialName != null) {
+            spec = spec.and(autoriSpecification.findAutoreByPartialName(partialName));
+        }
+
+        return this.autoriRepository.findAll(spec, pageable);
     }
 
     public Autore findAutoreById(UUID autoreId) {

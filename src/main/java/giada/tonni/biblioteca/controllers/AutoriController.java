@@ -5,6 +5,7 @@ import giada.tonni.biblioteca.exceptions.ValidationException;
 import giada.tonni.biblioteca.payloads.AutoreDTO;
 import giada.tonni.biblioteca.payloads.DeleteAutoreDTO;
 import giada.tonni.biblioteca.services.AutoriService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,8 +24,12 @@ public class AutoriController {
     }
 
     @GetMapping
-    public List<Autore> getAutori() {
-        return this.autoriService.findAllAutori();
+    public Page<Autore> getAutori(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String partialName
+    ) {
+        return this.autoriService.findAllAutori(page, size, partialName);
     }
 
     @PostMapping
