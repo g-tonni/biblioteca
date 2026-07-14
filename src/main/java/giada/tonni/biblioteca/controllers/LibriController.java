@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/libri")
@@ -52,4 +53,33 @@ public class LibriController {
             return this.libriService.addLibro(body, file);
         }
     }
+
+    @PutMapping("/{libroId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public Libro putLibri(@PathVariable UUID libroId, @RequestBody @Validated LibroDTO body, BindingResult validationResults) {
+        if (validationResults.hasErrors()) {
+            List<String> errorsList = validationResults
+                    .getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .toList();
+            throw new ValidationException(errorsList);
+        } else {
+            return this.libriService.modificaLibro(libroId, body);
+        }
+    }
+
+    @PatchMapping("/{libroId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public Libro patchLibri(@PathVariable UUID libroId, @RequestParam("copertina") MultipartFile file) {
+        return this.libriService.modificaCopertina(libroId, file);
+    }
+
+    @DeleteMapping("/{libroId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void deleteLibro(@PathVariable UUID libroId) {
+        this.libriService.deleteLibro(libroId);
+    }
+
 }
