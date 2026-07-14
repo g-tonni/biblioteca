@@ -4,7 +4,6 @@ import giada.tonni.biblioteca.entities.Autore;
 import giada.tonni.biblioteca.exceptions.BadRequestException;
 import giada.tonni.biblioteca.exceptions.NotFoundException;
 import giada.tonni.biblioteca.payloads.AutoreDTO;
-import giada.tonni.biblioteca.payloads.DeleteAutoreDTO;
 import giada.tonni.biblioteca.repositories.AutoriRepository;
 import giada.tonni.biblioteca.specifications.AutoriSpecification;
 import org.springframework.data.domain.Page;
@@ -54,8 +53,8 @@ public class AutoriService {
         return nuovoAutore;
     }
 
-    public void deleteAutore(DeleteAutoreDTO body) {
-        Autore autore = this.findAutoreById(body.autoreId());
+    public void deleteAutore(UUID autoreId) {
+        Autore autore = this.findAutoreById(autoreId);
 
         this.autoriRepository.delete(autore);
 

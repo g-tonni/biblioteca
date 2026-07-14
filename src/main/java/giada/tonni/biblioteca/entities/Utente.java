@@ -1,13 +1,21 @@
 package giada.tonni.biblioteca.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "utente")
-public class Utente {
+@JsonIgnoreProperties({"password", "ruolo", "accountNonExpired", "accountNonLocked", "authorities", "credentialsNonExpired", "enabled"})
+public class Utente implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -89,10 +97,6 @@ public class Utente {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public long getTelefono() {
         return telefono;
     }
@@ -109,4 +113,22 @@ public class Utente {
         return dataIscrizione;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.ruolo.getRuolo()));
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nome;
+    }
 }

@@ -2,6 +2,7 @@ package giada.tonni.biblioteca.services;
 
 import giada.tonni.biblioteca.entities.Ruolo;
 import giada.tonni.biblioteca.exceptions.BadRequestException;
+import giada.tonni.biblioteca.exceptions.NotFoundException;
 import giada.tonni.biblioteca.payloads.RuoloDTO;
 import giada.tonni.biblioteca.repositories.RuoliRepository;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,9 @@ public class RuoliService {
 
     public List<Ruolo> findAllRuoli() {
         return this.ruoliRepository.findAll();
+    }
+
+    public Ruolo findRuoloById(String ruolo) {
+        return this.ruoliRepository.findById(ruolo).orElseThrow(() -> new NotFoundException(ruolo));
     }
 }

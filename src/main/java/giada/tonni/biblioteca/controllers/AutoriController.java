@@ -3,15 +3,16 @@ package giada.tonni.biblioteca.controllers;
 import giada.tonni.biblioteca.entities.Autore;
 import giada.tonni.biblioteca.exceptions.ValidationException;
 import giada.tonni.biblioteca.payloads.AutoreDTO;
-import giada.tonni.biblioteca.payloads.DeleteAutoreDTO;
 import giada.tonni.biblioteca.services.AutoriService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/autori")
@@ -34,6 +35,7 @@ public class AutoriController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Autore addAutore(@RequestBody @Validated AutoreDTO body, BindingResult validationResults) {
         if (validationResults.hasErrors()) {
             List<String> listaErrori = validationResults
@@ -47,9 +49,10 @@ public class AutoriController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{autoreId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAutore(@RequestBody DeleteAutoreDTO body) {
-        this.autoriService.deleteAutore(body);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void deleteAutore(@PathVariable UUID autoreId) {
+        this.autoriService.deleteAutore(autoreId);
     }
 }
