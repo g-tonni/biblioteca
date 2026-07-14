@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 public record LibroDTO(
 
         @NotBlank(message = "L'ISBN deve essere inserito")
@@ -20,13 +22,10 @@ public record LibroDTO(
         @NotNull(message = "Il numero delle pagine deve essere inserito")
         int numPagine,
 
-        @NotBlank(message = "L'immagine di copertina deve essere inserita")
-        String copertina,
-
         @NotNull(message = "L'anno di pubblicazione deve essere inserito")
         int annoPubblicazione,
 
         @NotNull(message = "L'id dell'autore deve essere inserito")
-        String autore
+        UUID autore
 ) {
 }

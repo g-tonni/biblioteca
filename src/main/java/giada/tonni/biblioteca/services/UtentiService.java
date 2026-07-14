@@ -39,9 +39,7 @@ public class UtentiService {
     }
 
     public Utente findUtenteByEmail(String email) {
-        System.out.println("Email: " + email);
         Utente utenteTrovato = this.utentiRepository.findByEmail(email);
-        System.out.println("Utente: " + utenteTrovato);
         if (utenteTrovato == null) {
             throw new BadRequestException("Non esiste un utente associato a questa email");
         } else {
