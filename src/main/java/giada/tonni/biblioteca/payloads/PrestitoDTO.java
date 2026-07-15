@@ -2,6 +2,7 @@ package giada.tonni.biblioteca.payloads;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ public record PrestitoDTO(
         @Email(message = "Indirizzo email non valido")
         String emailUtente,
 
-        @NotBlank(message = "L'id del libro deve essere inserito")
+        @NotNull(message = "L'id del libro deve essere inserito")
         UUID libroId
 ) {
 }
